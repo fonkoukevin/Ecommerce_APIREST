@@ -1,0 +1,219 @@
+openapi: '3.0.2'
+info:
+  title: Documentation de l'API DESIGN
+  version: '1.0'
+servers:
+  - url: https://localhost:3000/api
+paths:
+  /design/:
+
+    get:
+      summary: recuperer tous les designs
+      description: recuperer les informations sur le design par l'ID
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/design"
+
+    post:
+      summary: Créer un nouveau design
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/NewDesign'
+      responses:
+        '201':
+          description: Créé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/design'
+        '400':
+          description: Requête invalide
+        '401':
+          description: Non authentifié
+  /design/{design_id}:
+    parameters:
+      - name: design_id
+        in: path
+        description: ID du design
+        required: true
+        schema:
+          type: integer
+          format: int 64
+    get:
+      summary: recuperer un design par l'ID
+      description: recuperer les informations sur le design par l'ID
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/design"
+        '404':
+          description: Categorie non trouvée
+
+    put:
+      summary: mise à jour
+      description: mettre à jour le produit
+      tags:
+        - design
+      requestBody:
+        description: mise à jour des designs
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/designUpdate"
+      responses:
+        '204':
+          description: categorie mise à jour avec succès
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/design"
+        '404':
+          description: categorie non trouvée
+    
+    delete:
+      summary: Supprimer
+      description: suppression de la liste des designs
+      tags:
+        - design
+      responses:
+        '204':
+          description: Design supprimé avec succès
+        '404':
+          description: Design non trouvé
+
+        
+        
+components:
+  schemas:
+    design:
+      type: object
+      properties:
+        design_id:
+          type: integer
+          description: ID du design
+          format: uuid
+        category_id:
+          type: integer
+          description: clé étrangère
+        designer_id:
+          type: integer
+          description: clé étrangère 
+        title:
+          type: string
+          description: prenom du design
+        slug:
+          type: string
+          description: lien du design (url)
+        description:
+          type: string
+          description: description du design
+        price:
+          type: number
+          description: price du design
+        date_added:
+          type: number
+          description: date d'ajout du produit
+        image:
+          type: string
+          description: image du design
+        thumbnail:
+          type: string
+          description: image de fond
+
+    NewDesign:
+      properties:
+        design_id:
+          type: integer
+          description: ID du design
+          format: uuid
+        category_id:
+          type: integer
+          description: clé étrangère
+        designer_id:
+          type: integer
+          description: clé étrangère 
+        title:
+          type: string
+          description: nouveau nom du design
+        slug:
+          type: string
+          description: nouveau lien du design (url)
+        description:
+          type: string
+          description: nouvelle description du design
+        price:
+          type: number
+          description: nouveau prix du design
+        date_added:
+          type: number
+          description: nouvelle date d'ajout du produit
+        image:
+          type: string
+          description: nouvelle image du design
+        thumbnail:
+          type: string
+          description: nouvelle image de fond
+
+
+    designUpdate:
+      properties:
+        design_id:
+          type: integer
+          description: ID du design
+          format: uuid
+        category_id:
+          type: integer
+          description: clé étrangère
+        designer_id:
+          type: integer
+          description: clé étrangère 
+        title:
+          type: string
+          description: mise à jour du nom du design
+        slug:
+          type: string
+          description: mise à jour du lien du design (url)
+        description:
+          type: string
+          description: mise à jour de la description du design
+        price:
+          type: number
+          description: mise à jour du prix du design
+        date_added:
+          type: number
+          description: mise à jour de la date date d'ajout du produit
+        image:
+          type: string
+          description: mise à jour de l'image du design
+        thumbnail:
+          type: string
+          description: mise à jour de l'image de fond
+      required:
+        - design_id
+        - category_id
+        - designer_id
+        - title
+        - slug
+        - description
+        - price
+        - date_added
+        - image
+        - thumbnail
+        

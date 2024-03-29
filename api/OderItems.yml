@@ -1,0 +1,210 @@
+openapi: '3.0.2'
+info:
+  title: Documentation de l'API article commande
+  version: '1.0'
+servers:
+  - url: https://localhost:3000/api
+
+paths:               #paths sont des critere d'evaluation or end point  (resources)
+  /OderItem/:
+
+   get:
+      summary: recuperer tous les l'article commande
+      description: recuperer les informations sur les article commande son l'ID
+      responses:
+        '200':
+          description: OK
+          content:
+
+            application/json:
+              schema:                 #schema ou content help to descript it datatype
+                type: array
+                items:
+                  $ref: "#/components/schemas/OrderItem"   #referencer une definition
+
+   post:
+      summary: Créer une nouvelle qrticle commande
+      requestBody:                             #le corps de la demande
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NOrderItem'
+      responses:
+        201:
+          description: Créé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderItem'
+        400:
+          description: Requête invalide
+
+
+  /OderItem/{orderitem_id}: #recuperer une requete specifique
+    parameters:
+      - name: orderitem_id
+        in: path
+        description: ID de l'article commande
+        required: true
+        schema:
+          type: integer
+          format: int 64
+    get:
+      summary: recuperer un article commande
+      description: recuperer les informations sur les article commande son l'ID
+      responses:
+        '200':
+          description: OK
+          content:
+
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OrderItem"
+        '404':
+          description: Categorie non trouvée
+
+    put:
+      summary: mise à jour
+      description: mettre à jour la liste des article commande
+      tags:               #regrouper les differente operation
+        - orderitem
+      requestBody:                          #partout apart get et delete utiliser
+        description: mise a jour des  articles commande 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderItemUpdate"
+      responses:
+        '204':
+          description: categorie mise à jour avec succès
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderItem"
+        '404':
+          description: categorie non trouvée
+    
+    delete:
+      summary: Supprimer
+      description: suppression de l'article commande
+      tags:
+        - orderitem
+      responses:
+        '204':
+          description: Client supprimé avec succès
+        '404':
+          description: Client non trouvé
+
+        
+        
+
+
+components:
+  schemas:
+    OrderItem:
+      type: object
+      properties:
+        orderitem_id:
+          type: integer
+          description: Id orderItem
+          format: uuid    #universale unique identifier
+        custom_id:
+          type: integer
+          description: clé etrangere
+        design_id:
+          type: integer
+          description: clé etrangere
+        designer_id:
+          type: integer
+          description: clé etrangere
+        designer_Paid:
+          type: number
+          description: la paye du concepteur
+        age_segment:
+          type: string
+          description: tranche d'age
+        price:
+          type: number
+          description:  prix d'un article
+        quantity:
+          type: number
+          description: quantite commande 
+
+    NOrderItem:
+      type: object
+      properties:
+        orderitem_id:
+          type: integer
+          description: Id orderItem
+          format: uuid
+        custom_id:
+          type: integer
+          description: clé etrangere
+        design_id:
+          type: integer
+          description: clé etrangere
+        designer_id:
+          type: integer
+          description: clé etrangere
+        designer_Paid:
+          type: number
+          description:  nouvelle paye du concepteur
+        age_segment:
+          type: string
+          description: nouveau tranche d'age
+        price:
+          type: number
+          description: nouveau prix d'un article
+        quantity:
+          type: number
+          description: nouvelle quantite commande 
+
+    OrderItemUpdate:
+      type: object
+      properties:
+        orderitem_id:
+          type: integer
+          description: Id orderItem
+          format: uuid
+        custom_id:
+          type: integer
+          description: clé etrangere
+        design_id:
+          type: integer
+          description: clé etrangere
+        designer_id:
+          type: integer
+          description: clé etrangere
+          
+        designer_Paid:
+          type: number
+          description: mise a jour de la paye du conceptuer
+        age_segment:
+          type: string
+          description: mise a jour de la tranche d'age
+        price:
+          type: number
+          description:  mise a jour du prix d'un article
+        quantity:
+          type: number
+          description:  mise a jour de la quantite commande 
+
+      required:
+        - orderitem_id
+        - designer_paid
+        - age_segment
+        - price
+        - quantity
+
+      
+      
+
+
+
+    
+    
+    

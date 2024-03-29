@@ -1,0 +1,138 @@
+openapi: 3.0.0  
+info:
+  title: Documentation de l'API de Categories  
+  version: 1.0.0  
+  description: Documentation de l'API RESTful de Categories 
+servers:
+  - url: https://localhost:3000/api  
+    description: Serveur principal  
+paths:
+   /categories/:
+    get:
+      summary: Obtenir toutes les categories 
+      operationId: getCategoryById 
+      tags:
+        - Categories 
+      responses:
+        '200':
+          description: OK  
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'  
+                
+    post: 
+      summary: Ajouter une nouvelle categorie
+      description: Permet d'ajouter une categorie
+      requestBody:
+        description: objet categorie a ajouter
+        required: true
+        content:
+          application/json:
+            schema:
+             $ref: '#/components/schemas/NewCategory'
+      responses:
+        '201':
+           description: Créée
+           content:
+             application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+   /categories/{category_id}:  
+    parameters:
+      - name: category_id  
+        in: path  
+        description: ID de la categorie  
+        required: true  
+        schema:
+          type: integer
+          format: int64
+    get:
+      summary: Obtenir une categorie par l'id
+      operationId: getCategoryById 
+      tags:
+        - Categories 
+      responses:
+        '200':
+          description: OK  
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'  
+        '404':
+          description: Catégorie non trouvée 
+
+    put:
+      summary: Mettre à jour une categorie  
+      operationId: updateCategory 
+      tags:
+        - Categories 
+      requestBody:
+        description: Nouvelles valeurs pour la categorie 
+        required: true  
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryUpdate'  
+      responses:
+        '204':
+          description: Catégorie mise à jour avec succès
+        '404':
+          description: Catégorie non trouvée  
+    delete:
+      summary: Supprimer une categorie  
+      operationId: deleteCategory  
+      tags:
+        - Categories  
+      responses:
+        '204':
+          description: Catégorie supprimée avec succès  
+        '404':
+          description: Catégorie non trouvée  
+components:
+  schemas:
+    Category:
+      type: object 
+      properties:
+        category_id:
+          type: integer  
+          format: uuid  
+          description: ID de la categorie  
+        slug:
+          type: string 
+          description: Slug de la categorie  
+        title:
+          type: string 
+          description: Titre de la categorie  
+
+    NewCategory:
+      type: object 
+      properties:
+        category_id:
+          type: integer  
+          format: uuid  
+          description: ID de la categorie  
+        slug:
+          type: string 
+          description: Slug de la categorie  
+        title:
+          type: string 
+          description: Titre de la categorie  
+
+    CategoryUpdate:
+      type: object  
+      properties:
+        category_id:
+          type: integer  
+          format: uuid  
+          description: ID de la categorie  
+        slug:
+          type: string 
+          description: Nouveau slug de la categorie  
+        title:
+          type: string 
+          description: Nouveau titre de la categorie 
+      required:
+        - category_id
+        - slug  
+        - title 

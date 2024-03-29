@@ -1,0 +1,238 @@
+openapi: '3.0.2'
+info:
+  title: Documentation de l'API CLIENT
+  version: '1.0'
+paths:
+  /custom/:
+
+   get:
+      summary: recuperer tous les clients
+      description: recuperer les informations sur les clients par l'ID
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/customer"
+
+   post:
+      summary: Créer un nouveau client
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewCustomer'
+      responses:
+        '201':
+          description: Créé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/customer'
+        '400':
+          description: Requête invalide
+        '401':
+          description: Non authentifié
+
+
+  /custom/{custom_id}:
+    parameters:
+      - name: custom_id
+        in: path
+        description: ID du client
+        required: true
+        schema:
+          type: integer
+          format: int 64
+    get:
+      summary: recuperer un client par l'id
+      description: recuperer les informations sur les clients par l'ID
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/customer"
+        '404':
+          description: Categorie non trouvée
+    
+    put:
+      summary: mise à jour
+      description: mettre à jour la liste des clients
+      tags:
+        - customer
+      requestBody:
+        description: Nouvelle valeur pour la catégorie
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/customerUpdate"
+      responses:
+        '204':
+          description: categorie mise à jour avec succès
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/customer"
+        '404':
+          description: categorie non trouvée
+    
+    delete:
+      summary: Supprimer
+      description: suppression de la liste des clients
+      tags:
+        - customer
+      responses:
+        '204':
+          description: Client supprimé avec succès
+        '404':
+          description: Client non trouvé
+
+        
+        
+
+
+components:
+  schemas:
+    customer:
+      type: object
+      properties:
+        custom_id:
+          type: integer
+          description: ID du client
+          format: uuid
+        user_id:
+          type: integer
+          description: clé etrangère à la table client
+        first_name:
+          type: string
+          description: prenom du client
+        lastname:
+          type: string
+          description: nom du client
+        email:
+          type: string
+          description: email du client
+        address:
+          type: string
+          description: adresse du client
+        zipcode:
+          type: string
+          description: code postal du client
+        place:
+          type: string
+          description: place du client
+        phone:
+          type: number
+          description: numero du client
+        created_at:
+          type: string
+          description: lieu de creation
+        paid_amount:
+          type: number
+          description: montant payé
+        designer:
+          type: string
+          description: nom du designer
+
+    NewCustomer:
+      type: object
+      properties:
+        custom_id:
+          type: integer
+          description: ID du client
+          format: uuid
+        user_id:
+          type: integer
+          description: clé etrangère à la table client
+        first_name:
+          type: string
+          description: prenom mis à jour
+        lastname:
+          type: string
+          description: nom mis à jour
+        email:
+          type: string
+          description: email mis à jour
+        address:
+          type: string
+          description: adresse mise à jour
+        zipcode:
+          type: string
+          description: code postal mis à jour
+        place:
+          type: string
+          description: place mise à jour
+        phone:
+          type: number
+          description: numero de telephone mis à jour
+        created_at:
+          type: string
+          description: lieu de création mis à jour
+        paid_amount:
+          type: number
+          description: montant payé mis à jour
+        designer:
+          type: string
+          description: designer mis à jour
+
+    customerUpdate:
+      type: object
+      properties:
+        custom_id:
+          type: integer
+          description: ID du client
+          format: uuid
+        user_id:
+          type: integer
+          description: clé etrangère à la table client
+        first_name:
+          type: string
+          description: prenom mis à jour
+        lastname:
+          type: string
+        email:
+          type: string
+        address:
+          type: string
+        zipcode:
+          type: string
+        place:
+          type: string
+        phone:
+          type: number
+        created_at:
+          type: string
+        paid_amount:
+          type: number
+        designer:
+          type: string
+      required:
+        - custom_id
+        - user_id
+        - first_name
+        - lastname
+        - email
+        - address
+        - zipcode
+        - place
+        - phone 
+        - created_at
+        - paid_amount
+        - designer
+
+servers:
+  - url: https://localhost:3000/api
+
+
+    
+    
+    

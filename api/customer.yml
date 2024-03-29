@@ -1,0 +1,219 @@
+openapi: 3.0.3
+info:
+  title: Swagger Petstore - OpenAPI 3.0
+  description: |-
+    ceci est un api qui vou permettra de gerer les customer d'un restaurant.
+    il as été concu par le groupe 7 keyce informatique & IA
+    2023/2023
+
+
+  contact:
+    email: collinsatem14@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+tags:
+  - name: User
+    description: Tout à propos des customers
+    externalDocs:
+      description: Trouver plus
+      url: http://localhost:3000
+
+paths:
+  /customer:
+    post:
+      tags:
+        - customer
+      summary: creer un costomer
+      description: Ceci ne peut-etre fais que part des customer connecté.
+      operationId: createCustomer
+      requestBody:
+        description: Creer un Object customer
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Customer'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        default:
+          description: operation reussie
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Customer'
+  /customer/createCustomerList:
+    post:
+      tags:
+        - customer 
+      summary: Cree un list customer avec des entrée des données.
+      description: crée un list de tous les customer avec les entrée des des leur differentes information.
+      operationId: createCustomerInput
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Customer'
+      responses:
+        '200':
+          description: opération reussie
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        default:
+          description: opération reussie
+  /customer/{customername}:
+    get:
+      tags:
+        - customer
+      summary: Get sutomer by ser name
+      description: ''
+      operationId: getCustomerByName
+      parameters:
+        - name: customername
+          in: path
+          description: 'Le nom qui doit etre trouver. Utiliser User1 pour tester. '
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: opération reussie
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '400':
+          description: Ce customername est invalid
+        '404':
+          description: customer non-trouver
+    put:
+      tags:
+        -  customer
+      summary: Pour Update  les customers
+      description: Ceci ne peut etre fais pas des utilisateur connecté.
+      operationId: updateCustomer
+      parameters:
+        - name: customername
+          in: path
+          description: Le nom qui doit etre supprimer
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: modifier un customer existant dans le table
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Customer'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        default:
+          description: opération reussie
+    delete:
+      tags:
+        - customer
+      summary: Delete costomer
+      description: Ceci ne peut-etre fais que par des personnes connecté.
+      operationId: deleteCustomer
+      parameters:
+        - name: customername
+          in: path
+          description: Le nom a supprimer
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Ce customer name est invalid
+        '404':
+          description: Customer non trouver
+components:
+  schemas:
+    Customer:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        username:
+          type: string
+          example: Collins
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: Atem
+        email:
+          type: string
+          example: collins@gmail.com
+        adress:
+          type: string
+          example: 'rue 2'
+        password:
+          type: string
+          example: '12345'
+          format: password
+        zipcode:
+          type: integer
+          example : '202'
+          format: int32
+        place:
+          type: integer
+          format : int32
+          example : '4'
+        phone:
+          type: string
+          example: '12345'
+        created_at:
+          type: string
+          example : '2 avril 2023'
+        paid_amount:
+         type : integer
+         example : '100000'
+         format: int64
+        designer : 
+         type : string
+         example : 'roger'
+        userStatus:
+          type: integer
+          description: Status du customer
+          format: int32
+          example: 1
+      xml:
+        name: user
+
+servers:
+ - url: http://localhost:3000/api
+              
+              
+
+
+
+
+
+

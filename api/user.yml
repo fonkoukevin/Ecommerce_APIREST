@@ -1,0 +1,170 @@
+openapi: '3.0.2'
+info:
+  title: Documentation de l'API USER
+  version: '1.0'
+servers:
+    - url: https://localhost:3000/api
+paths:
+  /users/:
+
+    get:
+      summary: Récupérer tous les utilisateurs
+      description: Retourne les informations de l'utilisateur correspondant à l'ID spécifié
+      parameters:
+        - in: path
+          name: user_id
+          schema:
+            type: integer
+          required: true
+          description: L'identifiant de l'utilisateur à récupérer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  
+    post:
+      summary: Ajouter un nouvel utilisateur
+      description: Ajoute un nouvel utilisateur à l'application
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewUser'       
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'       #affiche le format de reponse ou l'example de format de reponse
+        '400':
+          description: Requête invalide
+        '401':
+          description: Non authentifié
+  /users/{user_id}:
+    get:
+      summary: Récupérer un utilisateur par ID
+      description: Retourne les informations de l'utilisateur correspondant à l'ID spécifié
+      parameters:
+        - in: path
+          name: user_id
+          schema:
+            type: integer
+          required: true
+          description: L'identifiant de l'utilisateur à récupérer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Utilisateur introuvable
+    put:
+      summary: Mettre à jour un utilisateur par ID
+      description: Met à jour les informations de l'utilisateur correspondant à l'ID spécifié
+      parameters:
+        - in: path
+          name: user_id
+          schema:
+            type: integer
+          required: true
+          description: L'identifiant de l'utilisateur à mettre à jour
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Requête invalide
+        '404':
+          description: Utilisateur introuvable
+    delete:
+      summary: Supprimer un utilisateur par ID
+      description: Supprime l'utilisateur correspondant à l'ID spécifié
+      parameters:
+        - in: path
+          name: user_id
+          schema:
+            type: integer
+          required: true
+          description: L'identifiant de l'utilisateur à supprimer
+      responses:
+        '204':
+          description: OK
+        '404':
+          description: Utilisateur introuvable
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          description: Id de l'utilisateur
+          format: uuid
+        username:
+          type: string
+          description: nom utilisateur
+        email:
+          type: string
+          description: email utilisateur
+        passeword:
+          type: string 
+          description: mot de passe utilisateur
+        
+    UserUpdate:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          description: mis à jour de l'Id de l'utilisateur
+          format: uuid
+        username:
+          type: string
+          description: mise à jour du nom utilisateur
+        email:
+          type: string
+          description: mise à our de l'email utilisateur
+        passeword:
+          type: string 
+          description: mise à jour du mot de passe utilisateur
+    
+    NewUser:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          description: nouvel Id de l'utilisateur
+          format: uuid
+        username:
+          type: string
+          description: nouveau nom utilisateur
+        email:
+          type: string
+          format: email
+          description: nouvel email utilisateur
+        passeword:
+          type: string 
+          description: nouveau mot de passe utilisateur
+      required:
+        - user_id
+        - username
+        - email
+        - passeword
+
+

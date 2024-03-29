@@ -1,0 +1,154 @@
+openapi: '3.0.2'
+info:
+  title: API designer
+  version: '1.0'
+servers:
+  - url: https://localhost:3000/api
+paths:
+  /designers:
+
+    get:
+      summary: Récupérer tous les designers
+      description: Retourne les informations du designer correspondant à l'ID spécifié
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Designer'
+   
+    post:
+      summary: Ajouter un nouveau designer
+      description: Ajoute un nouveau designer à l'application
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewDesigner'
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Designer'
+        '400':
+          description: Requête invalide
+        '401':
+          description: Non authentifié
+  /designers/{designer_id}:
+    parameters:
+      - name: designer_id
+        in: path
+        description: ID du client
+        required: true
+        schema:
+          type: integer
+          format: int 64
+
+    get:
+      summary: Récupérer un designer par ID
+      description: Retourne les informations du designer correspondant à l'ID spécifié
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Designer'
+        '404':
+          description: Designer introuvable
+    put:
+      summary: Mettre à jour un designer par ID
+      description: Met à jour les informations du designer correspondant à l'ID spécifié
+      tags:
+        - "designer"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Designer'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DesignerUpdate'
+        '400':
+          description: Requête invalide
+        '404':
+          description: Designer introuvable
+    delete:
+      summary: Supprimer un designer par ID
+      description: Supprime le designer correspondant à l'ID spécifié
+      parameters:
+        - in: path
+          name: designer_id
+          schema:
+            type: integer
+          required: true
+          description: L'identifiant du designer à supprimer
+      responses:
+        '204':
+          description: OK
+        '404':
+          description: Designer introuvable
+
+
+
+components:
+  schemas:
+    Designer:
+      type: object
+      properties:
+        designer_id:
+          type: integer
+          format: uuid
+        user_id:
+          type: integer
+        name:
+          type: string
+          description: nom du designer
+        created_at:
+          type: string
+          description: date de creation du design 
+
+    DesignerUpdate:
+      type: object
+      properties:
+        designer_id:
+          type: integer
+          format: uuid
+        user_id:
+          type: integer
+        name:
+          type: string
+          description: nom du designer
+        created_at:
+          type: string
+          description: date de creation du design mis à jour
+
+    NewDesigner:
+      type: object
+      properties:
+        designer_id:
+          type: integer
+          format: uuid
+        user_id:
+          type: integer
+        name:
+          type: string
+          description: nom du designer
+        created_at:
+          type: string
+          description: date de creation du design 
+      required:
+        - designer_id
+        - user_id
+        - name
+        - created_at
+
